@@ -1,6 +1,6 @@
 models/*
 documents/*
-!documents/sample.txt
+!documents/sample*.txt
 vectorstore/
 __pycache__/
 .venv/
