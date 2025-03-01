@@ -8,7 +8,7 @@ CPUだけでローカルLLM(GPU不使用) - Qiita (<https://qiita.com/kansou/ite
 
 ## 使用するモデル
 
-Llama-3-ELYZA-JP-8B-gguf (Llama-3-ELYZA-JP-8BのGGUF形式)
+Llama-3-ELYZA-JP-8B-gguf (Llama-3-ELYZA-JP-8BのGGUF形式、5GB程度)
 
 ## 環境要件
 
@@ -34,3 +34,10 @@ pip install llama-cpp-python --prefer-binary --extra-index-url https://abetlen.g
 models/配下に以下のURLからモデルをダウンロード
 
 <https://huggingface.co/mmnga/Llama-3-ELYZA-JP-8B-gguf/blob/main/Llama-3-ELYZA-JP-8B-Q4_K_M.gguf>
+
+### ドキュメントのベクトル化
+
+1. documents配下に UTF-8 形式のテキストファイルを追加
+2. vector.pyを実行して、vectorstore/配下にベクトルデータベースが保存される
+
+(参照するドキュメントがなくても、RAGなしのLLMモードとして動作します)
