@@ -1,2 +1,5 @@
 models/*
+documents/*
+!documents/sample.txt
+__pycache__/
 .venv/

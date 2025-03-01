@@ -52,23 +52,45 @@ def load_vectorstore(embeddings_model_name="intfloat/multilingual-e5-small", per
         print(f"ベクトルストアが見つかりません: {persist_directory}")
         return None
 
+def directory_has_content(directory_path):
+    """ディレクトリ内にファイルやフォルダが存在するかをチェック"""
+    if not os.path.exists(directory_path) or not os.path.isdir(directory_path):
+        return False
+
+    # ディレクトリ内のすべての項目をリスト
+    contents = os.listdir(directory_path)
+
+    # 隠しファイル（.で始まるファイル）を除外してカウント
+    non_hidden_contents = [item for item in contents if not item.startswith('.')]
+
+    return len(non_hidden_contents) > 0
+
 def main():
     # 設定
     documents_dir = "documents"
     vectorstore_dir = "vectorstore"
     embeddings_model = "intfloat/multilingual-e5-small"
 
-    # ドキュメントディレクトリが存在するかチェック
+    # ドキュメントディレクトリのコンテンツをチェック
     if not os.path.exists(documents_dir):
         print(f"ドキュメントディレクトリが見つかりません: {documents_dir}")
         print("documentsディレクトリを作成して、テキストファイルを配置してください。")
+        return
+    elif not directory_has_content(documents_dir):
+        print(f"ドキュメントディレクトリにファイルがありません: {documents_dir}")
+        print("documentsディレクトリにテキストファイルを配置してください。")
         return
 
     # ドキュメントの読み込みと分割
     chunks = load_documents(documents_dir)
 
+    if len(chunks) == 0:
+        print("処理可能なドキュメントが見つかりませんでした。")
+        print("テキストファイル(.txt)を配置してください。")
+        return
+
     # ベクトルストアの作成と保存
-    vectorstore = create_vectorstore(
+    _ = create_vectorstore(
         chunks,
         embeddings_model_name=embeddings_model,
         persist_directory=vectorstore_dir
